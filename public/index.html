@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Snake Game</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: #f0efef;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #070606;
+      font-family: sans-serif;
+    }
+    canvas {
+      border: 4px solid #fff;
+      margin-top: 20px;
+      background-color: #000000bb;
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex;">
+    <div>
+      <h1>Snake Game</h1>
+      <p id="scoreDisplay">Score: 0</p>
+      <canvas id="gameCanvas" width="580" height="500"></canvas>
+      <br>
+      <button id="startBtn">ゲームスタート</button>
+    </div>
+    <div style="margin-left: 20px;">
+      <h2>ランキング</h2>
+      <ul id="rankingList">
+        <!-- 後でスコアを表示 -->
+      </ul>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+
+</body>
+</html>
