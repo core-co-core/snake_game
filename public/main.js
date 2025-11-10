@@ -338,9 +338,14 @@ async function updateRanking() {
     const data = await res.json();
     const list = document.getElementById("rankingList");
     list.innerHTML = "";
+
     data.forEach((row, i) => {
       const li = document.createElement("li");
-      li.textContent = `${i + 1}. ${row.player_name} - ${row.score}`;
+      li.innerHTML = `
+        <span class="rank">${i + 1}.</span>
+        <span class="name">${row.player_name}</span>
+        <span class="score">${row.score}</span>
+      `;
       list.appendChild(li);
     });
   } catch (err) {

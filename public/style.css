@@ -218,31 +218,86 @@ canvas {
 /* ランキングパネル */
 /* =============================== */
 .right-panel {
-  background-color: #ffffffcc;
+  background-color: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 15px 15px;
-  min-width: 200px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  border-radius: 16px;
+  padding: 20px 25px;
+  min-width: 220px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   height: fit-content;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.right-panel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* 見出し */
 .right-panel h2 {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 20px;
   color: #2b6cb0;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  border-bottom: 2px solid #edf2f7;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
+.right-panel h2::before {
+  content: "🏆";
+  font-size: 22px;
+}
+
+/* リスト全体 */
 #rankingList {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 240px;
+  overflow-y: auto;
 }
 
+/* 各行 */
 #rankingList li {
-  margin: 6px 0;
-  padding: 4px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #edf2f7;
   font-size: 15px;
-  border-bottom: 1px solid #e2e8f0;
+  color: #333;
+}
+
+/* 順位を強調 */
+#rankingList li span.rank {
+  font-weight: 600;
+  width: 28px;
+  text-align: right;
+  margin-right: 6px;
+  color: #4a5568;
+}
+
+/* 上位3位カラー */
+#rankingList li:nth-child(1) span.rank {
+  color: #eab308; /* gold */
+}
+#rankingList li:nth-child(2) span.rank {
+  color: #a0aec0; /* silver */
+}
+#rankingList li:nth-child(3) span.rank {
+  color: #d97706; /* bronze */
+}
+
+/* 名前・スコア */
+#rankingList li span.name {
+  flex: 1;
+  text-align: left;
+}
+#rankingList li span.score {
+  font-weight: 500;
+  color: #2b6cb0;
 }
