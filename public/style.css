@@ -221,83 +221,109 @@ canvas {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-  padding: 20px 25px;
-  min-width: 220px;
+  padding: 18px 25px;
+  width: 240px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  height: fit-content;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 40px; /* ← カードを下げる */
 }
 
 .right-panel:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
-/* 見出し */
+/* タイトル部分 */
 .right-panel h2 {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 20px;
+  font-size: 18px;
   color: #2b6cb0;
-  border-bottom: 2px solid #edf2f7;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
   font-weight: 600;
 }
 
 .right-panel h2::before {
   content: "🏆";
-  font-size: 22px;
+  font-size: 20px;
 }
 
-/* リスト全体 */
+/* ランキングリスト */
 #rankingList {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 240px;
-  overflow-y: auto;
 }
 
-/* 各行 */
 #rankingList li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
+  align-items: baseline;
+  padding: 6px 10px;
   border-bottom: 1px solid #edf2f7;
   font-size: 15px;
-  color: #333;
+  line-height: 1.6;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: background-color 0.3s;
 }
 
-/* 順位を強調 */
+/* --- トップ3専用装飾 --- */
+
+/* 1位：金 */
+#rankingList li:nth-child(1) {
+  background: linear-gradient(90deg, #fff8dc, #fef9c3);
+  font-weight: 600;
+}
+
+/* 2位：銀 */
+#rankingList li:nth-child(2) {
+  background: linear-gradient(90deg, #f9fafb, #e2e8f0);
+  font-weight: 600;
+}
+
+/* 3位：銅 */
+#rankingList li:nth-child(3) {
+  background: linear-gradient(90deg, #fff7ed, #fde68a);
+  font-weight: 600;
+}
+
+/* 最後の行だけボーダー削除 */
+#rankingList li:last-child {
+  border-bottom: none;
+}
+
+/* 順位・名前・スコア */
 #rankingList li span.rank {
   font-weight: 600;
-  width: 28px;
+  width: 24px;
   text-align: right;
   margin-right: 6px;
   color: #4a5568;
 }
 
-/* 上位3位カラー */
-#rankingList li:nth-child(1) span.rank {
-  color: #eab308; /* gold */
-}
-#rankingList li:nth-child(2) span.rank {
-  color: #a0aec0; /* silver */
-}
-#rankingList li:nth-child(3) span.rank {
-  color: #d97706; /* bronze */
-}
-
-/* 名前・スコア */
 #rankingList li span.name {
   flex: 1;
   text-align: left;
+  color: #333;
 }
+
 #rankingList li span.score {
-  font-weight: 500;
+  font-weight: 600;
   color: #2b6cb0;
+}
+
+/* 上位3位の順位カラー */
+#rankingList li:nth-child(1) span.rank {
+  color: #d4af37; /* 金 */
+}
+#rankingList li:nth-child(2) span.rank {
+  color: #a0aec0; /* 銀 */
+}
+#rankingList li:nth-child(3) span.rank {
+  color: #cd7f32; /* 銅 */
 }
