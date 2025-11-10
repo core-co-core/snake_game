@@ -11,6 +11,11 @@ const overlay = document.getElementById('overlay'); // 操作説明オーバー�
 const startBtn = document.getElementById('startBtn'); // スタートボタン
 const playerNameInput = document.getElementById('playerName'); // プレイヤー名入力欄
 
+const gameOverOverlay = document.getElementById('gameOverOverlay');
+const finalScoreText = document.getElementById('finalScoreText');
+const rankingNotice = document.getElementById('rankingNotice');
+const returnBtn = document.getElementById('returnBtn');
+
 // --- ゲーム基本設定 ---
 const boxSize = 20;
 const rows = 25;
@@ -262,23 +267,56 @@ function showFloatingScore(x, y, amount = 100) {
 // ===============================
 // ゲームオーバー処理
 // ===============================
-function gameOver() {
-  alert(`Game Over! Score: ${score}`);
+async function gameOver() {
   gameRunning = false;
 
-  // スコア送信
-  if (playerName) saveScore(playerName, score);
+  // 最終スコア表示
+  finalScoreText.textContent = `スコア: ${score}`;
+  rankingNotice.textContent = "";
 
-  // 再挑戦準備：オーバーレイ再表示
-  overlay.style.display = "flex";
-  playerNameInput.value = playerName; // 名前を残しておく
-  updateRanking();
+  let isInRanking = false;
+
+  // スコア送信＆ランキング更新
+  if (playerName) {
+    try {
+      await fetch("/api/score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: playerName, score }),
+      });
+      const res = await fetch("/api/scores");
+      const data = await res.json();
+
+      // 現在のプレイヤーがランキングにいるか確認
+      const rankIndex = data.findIndex(r => r.player_name === playerName && r.score === score);
+
+      if (rankIndex !== -1 && rankIndex < 10) {
+        rankingNotice.textContent = `🎉 ランキング入賞！ ${rankIndex + 1}位！`;
+        isInRanking = true;
+      } else {
+        rankingNotice.textContent = `ランキング圏外`;
+      }
+
+      updateRanking();
+    } catch (err) {
+      console.error("ランキング更新失敗:", err);
+      rankingNotice.textContent = "通信エラー（スコア送信失敗）";
+    }
+  } else {
+    rankingNotice.textContent = "スコア送信なし";
+  }
+
+  // ゲームオーバーオーバーレイを表示
+  gameOverOverlay.style.display = "flex";
 }
+
+returnBtn.addEventListener('click', () => {
+  window.location.reload(); // // タイトルに戻る → リロード
+});
 
 // ===============================
 // API連携：スコア保存・取得
 // ===============================
-
 // スコア送信
 async function saveScore(name, score) {
   try {
