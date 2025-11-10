@@ -45,7 +45,7 @@ startBtn.addEventListener('click', () => {
 document.addEventListener('keydown', e => {
   const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '];
   if (keys.includes(e.key)) {
-    e.preventDefault(); // ← 余計な入力を阻止
+    e.preventDefault(); // 余計な入力を阻止
   }
 
   // 矢印キー操作
@@ -185,6 +185,7 @@ function drawGame(timestamp) {
       foods[i] = generateFood();
       speed = Math.max(50, speed - 5); // スピードアップ
       ateFood = true;
+      showFloatingScore(head.x + boxSize / 2, head.y - 6, 100); // アニメーション呼び出し
       break;
     }
   }
@@ -193,17 +194,69 @@ function drawGame(timestamp) {
   if (!ateFood) snake.pop();
 
   // スネーク描画
-  ctx.fillStyle = 'green';
-  snake.forEach(part => ctx.fillRect(part.x, part.y, boxSize, boxSize));
+  ctx.fillStyle = '#4CAF50';
+  snake.forEach(part => {
+    ctx.beginPath();
+    // 角丸を再現する
+    const radius = 4;
+    ctx.moveTo(part.x + radius, part.y);
+    ctx.lineTo(part.x + boxSize - radius, part.y);
+    ctx.quadraticCurveTo(part.x + boxSize, part.y, part.x + boxSize, part.y + radius);
+    ctx.lineTo(part.x + boxSize, part.y + boxSize - radius);
+    ctx.quadraticCurveTo(part.x + boxSize, part.y + boxSize, part.x + boxSize - radius, part.y + boxSize);
+    ctx.lineTo(part.x + radius, part.y + boxSize);
+    ctx.quadraticCurveTo(part.x, part.y + boxSize, part.x, part.y + boxSize - radius);
+    ctx.lineTo(part.x, part.y + radius);
+    ctx.quadraticCurveTo(part.x, part.y, part.x + radius, part.y);
+    ctx.fill();
+  });
 
   // エサ描画
-  ctx.fillStyle = 'red';
+  ctx.fillStyle = '#d9333f';
   foods.forEach(f => ctx.fillRect(f.x, f.y, boxSize, boxSize));
+
+  // --- スコア「+100」浮かび上がりアニメーション描画 ---
+  if (floatingTexts.length) {
+    ctx.save();
+    ctx.font = "bold 20px Poppins, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    floatingTexts.forEach(ft => {
+      ctx.globalAlpha = ft.alpha;
+      ctx.fillStyle = "#B00000";
+      ctx.fillText(ft.text, ft.x, ft.y);
+
+      // アニメーション更新
+      ft.y -= 1.1;     // 少し上へ
+      ft.alpha -= 0.2;  // フェードアウト
+    });
+
+    // 消えたものを削除
+    floatingTexts = floatingTexts.filter(ft => ft.alpha > 0);
+    ctx.restore();
+  }
 
   // スコア更新
   document.getElementById('scoreDisplay').textContent = 'Score: ' + score;
 
   requestAnimationFrame(drawGame);
+}
+
+// ===============================
+// アニメーション関数
+// ===============================
+// スコア浮かび上がり用のエフェクト配列
+let floatingTexts = []; // { x, y, alpha, vy, text }
+
+// スコア加算アニメーション
+function showFloatingScore(x, y, amount = 100) {
+    floatingTexts.push({
+    text: `+${amount}`,
+    x, y,
+    alpha: 1.0,
+    vy: 0.8,
+  });
 }
 
 // ===============================
