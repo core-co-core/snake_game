@@ -2,42 +2,43 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Simple Snake Game</title>
+  <title>Snake Game</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      background-color: #f0efef;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #070606;
-      font-family: sans-serif;
-    }
-    canvas {
-      border: 4px solid #fff;
-      margin-top: 20px;
-      background-color: #000000bb;
-    }
-  </style>
+  <!-- モダンフォント -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <div style="display: flex;">
-    <div>
-      <h1>Snake Game</h1>
-      <p id="scoreDisplay">Score: 0</p>
-      <canvas id="gameCanvas" width="580" height="500"></canvas>
-      <br>
-      <button id="startBtn">ゲームスタート</button>
+  <div class="layout">
+    <div class="left-panel">
+      <h1>🐍 Snake Game</h1>
+      <p id="scoreDisplay">SCORE: 0</p>
+
+      <div class="game-container">
+        <canvas id="gameCanvas" width="580" height="500"></canvas>
+
+        <!-- スタート前オーバーレイ -->
+        <div id="overlay" class="overlay">
+          <div class="overlay-content">
+            <h2>🎮操作説明</h2>
+            <p>↑ ↓ ← → キーでスネークを操作</p>
+            <p>エサを食べるとスコア＋100 & スピードアップ！</p>
+            <p>壁や自分に当たるとゲームオーバー</p>
+            <input type="text" id="playerName" placeholder="プレイヤー名を入力" maxlength="20">
+            <br>
+            <button id="startBtn">ゲームスタート</button>
+            <p class="start-hint">または <b>Enterキー</b> で開始</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div style="margin-left: 20px;">
-      <h2>ランキング</h2>
-      <ul id="rankingList">
-        <!-- 後でスコアを表示 -->
-      </ul>
+
+    <div class="right-panel">
+      <h2>🏆ランキング</h2>
+      <ul id="rankingList"></ul>
     </div>
   </div>
 
   <script src="main.js"></script>
-
 </body>
 </html>
